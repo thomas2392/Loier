@@ -1,10 +1,16 @@
 package main
 
 import (
+	"loier/config/server"
+
 	"github.com/go-pdf/fpdf"
 )
 
 func main() {
+	server.Listen()
+}
+
+func pdf() {
 	pdf := fpdf.New("P", "mm", "A4", "")
 	pdf.AddPage()
 	pdf.SetFont("Arial", "B", 16)
