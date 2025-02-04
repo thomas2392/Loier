@@ -2,7 +2,8 @@ package main
 
 import (
 	"fmt"
-	partilha "loier/partilha"
+	model "loier/partilha/models"
+	service "loier/partilha/services"
 
 	"github.com/go-pdf/fpdf"
 )
@@ -11,7 +12,7 @@ func main() {
 	//server.Listen()
 	falecido := criarFalecido()
 	bens := criarBens()
-	partilhas := falecido.CriarPartilha(bens)
+	partilhas := service.CriarPartilha(falecido, bens)
 
 	for _, p := range partilhas {
 		for _, distribuicao := range p.Distribuicao {
@@ -22,16 +23,16 @@ func main() {
 	}
 }
 
-func criarFalecido() partilha.Pessoa {
-	falecido := partilha.Pessoa{
+func criarFalecido() model.Pessoa {
+	falecido := model.Pessoa{
 		Nome:          "Falecido",
 		DataObito:     "03/02/2025",
 		DataCasamento: "01/01/2025",
-		Conjuge: &partilha.Pessoa{
+		Conjuge: &model.Pessoa{
 			Nome:   "Conjuge",
 			Meeiro: true,
 		},
-		Filhos: []partilha.Pessoa{
+		Filhos: []model.Pessoa{
 			{
 				Nome: "Filho1",
 			},
@@ -43,12 +44,12 @@ func criarFalecido() partilha.Pessoa {
 	return falecido
 }
 
-func criarBens() []partilha.Bem {
-	bem := partilha.Bem{
+func criarBens() []model.Bem {
+	bem := model.Bem{
 		Nome:  "Imovel",
 		Valor: 100,
 	}
-	return []partilha.Bem{bem}
+	return []model.Bem{bem}
 }
 
 func pdf() {
