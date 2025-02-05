@@ -25,13 +25,12 @@ func PartilhaController(w http.ResponseWriter, r *http.Request) {
 	bens := criarBens()
 	partilhas := service.CriarPartilha(result, bens)
 
-	for _, p := range partilhas {
-		for _, distribuicao := range p.Distribuicao {
-			fmt.Println("Bem:", p.Bem)
-			fmt.Println("Herdeiro:", distribuicao.Pessoa.Nome)
-			fmt.Println("Percentual:", distribuicao.Percentual)
-		}
+	response, err := json.Marshal(partilhas)
+	if err != nil {
+		fmt.Println(err)
+		return
 	}
+	w.Write(response)
 }
 
 func criarBens() []model.Bem {
