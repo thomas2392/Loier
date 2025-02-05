@@ -13,7 +13,7 @@ func TestHandler(t *testing.T) {
 	}
 
 	rr := httptest.NewRecorder()
-	handler := http.HandlerFunc(handler)
+	handler := http.HandlerFunc(health)
 
 	handler.ServeHTTP(rr, req)
 
@@ -22,7 +22,7 @@ func TestHandler(t *testing.T) {
 			status, http.StatusOK)
 	}
 
-	expected := "Hello, World!"
+	expected := "Health check!"
 	if rr.Body.String() != expected {
 		t.Errorf("handler returned unexpected body: got %v want %v",
 			rr.Body.String(), expected)
