@@ -7,45 +7,45 @@ import (
 func CriarPartilha(falecido models.Pessoa, listaDeBens []models.Bem) []models.Partilha {
 	var partilhas []models.Partilha
 	for _, bem := range listaDeBens {
-		distribuicoes := calcularDistribuicoes(falecido)
+		herdeiros := calcularPercentuaisHeranca(falecido)
 		partilha := models.Partilha{
-			Bem:          bem,
-			Distribuicao: distribuicoes,
+			Bem:       bem,
+			Herdeiros: herdeiros,
 		}
 		partilhas = append(partilhas, partilha)
 	}
 	return partilhas
 }
 
-func calcularDistribuicoes(falecido models.Pessoa) []models.Distribuicao {
-	var distribuicoes []models.Distribuicao
+func calcularPercentuaisHeranca(falecido models.Pessoa) []models.Herdeiro {
+	var herdeiros []models.Herdeiro
 	percentual := 100.0
 
 	if falecido.Conjuge.Meeiro {
-		percentual, distribuicoes = criarMeeiro(*falecido.Conjuge, percentual, distribuicoes)
+		percentual, herdeiros = criarMeeiro(*falecido.Conjuge, percentual, herdeiros)
 	}
 	for _, filho := range falecido.Filhos {
-		distribuicao := criarHerdeiro(filho, len(falecido.Filhos), percentual)
-		distribuicoes = append(distribuicoes, distribuicao)
+		herdeiro := criarHerdeiro(filho, len(falecido.Filhos), percentual)
+		herdeiros = append(herdeiros, herdeiro)
 	}
 
-	return distribuicoes
+	return herdeiros
 }
 
-func criarMeeiro(conjuge models.Pessoa, percentual float64, distribuicoes []models.Distribuicao) (float64, []models.Distribuicao) {
+func criarMeeiro(conjuge models.Pessoa, percentual float64, herdeiros []models.Herdeiro) (float64, []models.Herdeiro) {
 	percentual = percentual / 2
-	distribuicao := models.Distribuicao{
-		Pessoa:     conjuge,
+	herdeiro := models.Herdeiro{
+		Nome:       conjuge.Nome,
 		Percentual: percentual,
 	}
-	distribuicoes = append(distribuicoes, distribuicao)
-	return percentual, distribuicoes
+	herdeiros = append(herdeiros, herdeiro)
+	return percentual, herdeiros
 }
 
-func criarHerdeiro(herdeiro models.Pessoa, quantidadeHerdeiros int, percentual float64) models.Distribuicao {
-	distribuicao := models.Distribuicao{
-		Pessoa:     herdeiro,
+func criarHerdeiro(pessoa models.Pessoa, quantidadeHerdeiros int, percentual float64) models.Herdeiro {
+	herdeiro := models.Herdeiro{
+		Nome:       pessoa.Nome,
 		Percentual: percentual / float64(quantidadeHerdeiros),
 	}
-	return distribuicao
+	return herdeiro
 }
