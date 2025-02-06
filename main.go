@@ -1,13 +1,13 @@
 package main
 
 import (
-	"loier/config/server"
+	"loier/server"
 
 	"github.com/go-pdf/fpdf"
 )
 
 func main() {
-	server.Listen()
+	server.StartServer()
 }
 
 func pdf() {

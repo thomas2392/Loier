@@ -23,14 +23,9 @@ func PartilhaController(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	bens := criarBens()
-	partilhas := service.CriarPartilha(result, bens)
-
-	response, err := json.Marshal(partilhas)
-	if err != nil {
-		fmt.Println(err)
-		return
-	}
-	w.Write(response)
+	response := service.CriarPartilha(result, bens)
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(response)
 }
 
 func criarBens() []model.Bem {
