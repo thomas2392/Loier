@@ -2,6 +2,7 @@ package services
 
 import (
 	"loier/partilha/models"
+	"strconv"
 	"testing"
 )
 
@@ -27,36 +28,68 @@ func TestCriarMeeiroSemHerdeiros(t *testing.T) {
 }
 
 func TestCalcularPercentuaisHerancaSemConjuge(t *testing.T) {
-	percentualEsperado := 100.0
-	falecido := models.Pessoa{
-		Nome:          "Falceido",
-		DataObito:     "01/01/1990",
-		DataCasamento: "01/01/2010",
-		Filhos: []models.Pessoa{
-			{
-				Nome: "Filho01",
-			},
-			{
-				Nome: "Filho02",
-			},
-		},
-	}
+	falecido := criarFalecido()
+	falecido.Filhos = criarFilhos(2)
 	herdeiros := calcularPercentuaisHeranca(falecido)
 	totalPercentual := 0.0
 	for _, h := range herdeiros {
 		totalPercentual += h.Percentual
 	}
-
+	percentualEsperado := 100.0
 	if totalPercentual != percentualEsperado {
 		t.Fatalf("Resultado esperado era %v mas retornou %v", percentualEsperado, totalPercentual)
 	}
+}
+
+func TestCalcularPercentualApenasConjuge(t *testing.T) {
+	falecido := criarFalecido()
+	falecido.Conjuge = criarConjuge()
+	herdeiros := calcularPercentuaisHeranca(falecido)
+
+	percentualTotal := 0.0
+	for _, h := range herdeiros {
+		percentualTotal += h.Percentual
+	}
+
+	percentualEsperado := 100.0
+
+	if percentualTotal != percentualEsperado {
+		t.Fatalf("O percentual esperado deveria ser %v mas foi %v", percentualEsperado, percentualTotal)
+	}
+
 }
 
 func criarConjuge() *models.Pessoa {
 	conjuge := models.Pessoa{
 		Nome:          "ConjugeTeste",
 		DataCasamento: "01/01/1990",
+		Meeiro:        true,
 	}
 
 	return &conjuge
+}
+
+func criarFalecido() models.Pessoa {
+	falcecido := models.Pessoa{
+		Nome:          "FalcedidoTeste",
+		DataObito:     "01/01/2020",
+		DataCasamento: "01/01/2000",
+		Conjuge:       criarConjuge(),
+	}
+
+	return falcecido
+}
+
+func criarFilhos(quantidade int) []models.Pessoa {
+	var filhos []models.Pessoa
+	for range quantidade {
+		q := strconv.Itoa(quantidade)
+		filho := models.Pessoa{
+			Nome: "Filho" + q,
+		}
+		quantidade--
+		filhos = append(filhos, filho)
+	}
+
+	return filhos
 }
