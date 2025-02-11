@@ -1,6 +1,6 @@
 FROM golang:1.23-alpine
 
-WORKDIR /loier
+WORKDIR /user/app/loier
 
 # pre-copy/cache go.mod for pre-downloading dependencies and only redownloading them in subsequent builds if they change
 COPY go.mod go.sum ./
