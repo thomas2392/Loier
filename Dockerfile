@@ -8,5 +8,5 @@ RUN go mod download
 
 COPY ./ ./
 
-CMD ["go", "build", "-o", "loier"]
+RUN go build -o loier
 CMD ["./loier"]
