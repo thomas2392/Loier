@@ -21,30 +21,34 @@ func calcularPercentuaisHeranca(falecido models.Pessoa) []models.Herdeiro {
 	var herdeiros []models.Herdeiro
 	percentual := 100.0
 
-	if falecido.Conjuge != nil && falecido.Conjuge.Meeiro {
-		percentual, herdeiros = criarMeeiro(*falecido.Conjuge, percentual, herdeiros)
+	if falecido.Conjuge != nil {
+		conjuge, _ := falecido.Conjuge.(models.Conjuge)
+		if conjuge.Meeiro {
+			percentual, herdeiros = criarMeeiro(conjuge.NomeFamiliar(), percentual, herdeiros)
+		}
 	}
 	for _, filho := range falecido.Filhos {
-		herdeiro := criarHerdeiro(filho, len(falecido.Filhos), percentual)
+		f, _ := filho.(models.Filho)
+		herdeiro := criarHerdeiro(f.NomeFamiliar(), len(falecido.Filhos), percentual)
 		herdeiros = append(herdeiros, herdeiro)
 	}
 
 	return herdeiros
 }
 
-func criarMeeiro(conjuge models.Pessoa, percentual float64, herdeiros []models.Herdeiro) (float64, []models.Herdeiro) {
+func criarMeeiro(nome string, percentual float64, herdeiros []models.Herdeiro) (float64, []models.Herdeiro) {
 	percentual = percentual / 2
 	herdeiro := models.Herdeiro{
-		Nome:       conjuge.Nome,
+		Nome:       "Teste",
 		Percentual: percentual,
 	}
 	herdeiros = append(herdeiros, herdeiro)
 	return percentual, herdeiros
 }
 
-func criarHerdeiro(pessoa models.Pessoa, quantidadeHerdeiros int, percentual float64) models.Herdeiro {
+func criarHerdeiro(nome string, quantidadeHerdeiros int, percentual float64) models.Herdeiro {
 	herdeiro := models.Herdeiro{
-		Nome:       pessoa.Nome,
+		Nome:       nome,
 		Percentual: percentual / float64(quantidadeHerdeiros),
 	}
 	return herdeiro
