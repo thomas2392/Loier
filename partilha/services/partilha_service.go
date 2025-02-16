@@ -27,19 +27,22 @@ func calcularPercentuaisHeranca(falecido models.Pessoa) []models.Herdeiro {
 			percentual, herdeiros = criarMeeiro(conjuge.NomeFamiliar(), percentual, herdeiros)
 		}
 	}
-	for _, filho := range falecido.Filhos {
-		f, _ := filho.(models.Filho)
-		herdeiro := criarHerdeiro(f.NomeFamiliar(), len(falecido.Filhos), percentual)
-		herdeiros = append(herdeiros, herdeiro)
+	if len(falecido.Filhos) < 1 {
+		herdeiros[0].Percentual = 100.0
+	} else {
+		for _, filho := range falecido.Filhos {
+			f, _ := filho.(models.Filho)
+			herdeiro := criarHerdeiro(f.NomeFamiliar(), len(falecido.Filhos), percentual)
+			herdeiros = append(herdeiros, herdeiro)
+		}
 	}
-
 	return herdeiros
 }
 
 func criarMeeiro(nome string, percentual float64, herdeiros []models.Herdeiro) (float64, []models.Herdeiro) {
 	percentual = percentual / 2
 	herdeiro := models.Herdeiro{
-		Nome:       "Teste",
+		Nome:       nome,
 		Percentual: percentual,
 	}
 	herdeiros = append(herdeiros, herdeiro)

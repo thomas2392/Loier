@@ -12,7 +12,7 @@ func TestCriarMeeiroSemHerdeiros(t *testing.T) {
 	var herdeiros []models.Herdeiro
 	conjuge := criarConjuge()
 
-	percentual, herdeiros = criarMeeiro(*conjuge, percentual, herdeiros)
+	percentual, herdeiros = criarMeeiro(conjuge.NomeFamiliar(), percentual, herdeiros)
 
 	if percentual != percentualEsperado {
 		t.Fatalf("Percentual esperado era metade %v, recebeu %v", percentualEsperado, percentual)
@@ -43,7 +43,6 @@ func TestCalcularPercentuaisHerancaSemConjuge(t *testing.T) {
 
 func TestCalcularPercentualApenasConjuge(t *testing.T) {
 	falecido := criarFalecido()
-	falecido.Conjuge = criarConjuge()
 	herdeiros := calcularPercentuaisHeranca(falecido)
 
 	percentualTotal := 0.0
@@ -59,19 +58,18 @@ func TestCalcularPercentualApenasConjuge(t *testing.T) {
 
 }
 
-func criarConjuge() *models.Pessoa {
-	conjuge := models.Pessoa{
-		Nome:          "ConjugeTeste",
-		DataCasamento: "01/01/1990",
-		Meeiro:        true,
+func criarConjuge() models.Conjuge {
+	conjuge := models.Conjuge{
+		Nome:   "ConjugeTeste",
+		Meeiro: true,
 	}
 
-	return &conjuge
+	return conjuge
 }
 
 func criarFalecido() models.Pessoa {
 	falcecido := models.Pessoa{
-		Nome:          "FalcedidoTeste",
+		NomeFalecido:  "FalcedidoTeste",
 		DataObito:     "01/01/2020",
 		DataCasamento: "01/01/2000",
 		Conjuge:       criarConjuge(),
@@ -80,11 +78,11 @@ func criarFalecido() models.Pessoa {
 	return falcecido
 }
 
-func criarFilhos(quantidade int) []models.Pessoa {
-	var filhos []models.Pessoa
+func criarFilhos(quantidade int) []models.Familiar {
+	var filhos []models.Familiar
 	for range quantidade {
 		q := strconv.Itoa(quantidade)
-		filho := models.Pessoa{
+		filho := models.Filho{
 			Nome: "Filho" + q,
 		}
 		quantidade--
