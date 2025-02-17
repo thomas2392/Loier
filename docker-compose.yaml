@@ -2,7 +2,11 @@ services:
   redis-server:
     image: 'redis'
   loier:
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
     restart: always
     ports:
       - "8080:8080"
+    volumes:
+      - /home/thomas/Loier:/user/app/loier
