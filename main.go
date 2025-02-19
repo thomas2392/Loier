@@ -1,34 +1,15 @@
 package main
 
 import (
-	"context"
-	"fmt"
-	"loier/server"
+	redis "loier/config/redis"
+	"loier/config/server"
 
 	"github.com/go-pdf/fpdf"
-	"github.com/go-redis/redis/v8"
 )
 
-var ctx = context.Background()
-
 func main() {
-	criarClientRedis()
+	redis.CreateRedisClient()
 	server.StartServer()
-}
-
-func criarClientRedis() {
-	rdb := redis.NewClient(&redis.Options{
-		Addr:     "redis-server:6379",
-		Password: "",
-		DB:       0,
-	})
-
-	pong, err := rdb.Ping(ctx).Result()
-	if err != nil {
-		fmt.Println("Erro ao conectar ao Redis:", err)
-		return
-	}
-	fmt.Println("Conexão bem sucedida ao Redis:", pong)
 }
 
 func pdf() {
