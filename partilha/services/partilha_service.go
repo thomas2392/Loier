@@ -4,7 +4,7 @@ import (
 	"loier/partilha/models"
 )
 
-func CriarPartilha(falecido models.Pessoa, listaDeBens []models.Bem) []models.Partilha {
+func CriarPartilha(falecido models.Falecido, listaDeBens []models.Bem) []models.Partilha {
 	var partilhas []models.Partilha
 	for _, bem := range listaDeBens {
 		herdeiros := calcularPercentuaisHeranca(falecido)
@@ -17,7 +17,7 @@ func CriarPartilha(falecido models.Pessoa, listaDeBens []models.Bem) []models.Pa
 	return partilhas
 }
 
-func calcularPercentuaisHeranca(falecido models.Pessoa) []models.Herdeiro {
+func calcularPercentuaisHeranca(falecido models.Falecido) []models.Herdeiro {
 	var herdeiros []models.Herdeiro
 	percentual := 100.0
 

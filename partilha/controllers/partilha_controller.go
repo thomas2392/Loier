@@ -16,22 +16,13 @@ func PartilhaController(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		log.Println(err)
 	}
-	var result model.Pessoa
+	var result model.PartilhaRequest
 	err = json.Unmarshal(request, &result)
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
-	bens := criarBens()
-	response := service.CriarPartilha(result, bens)
+	response := service.CriarPartilha(result.Falecido, result.Bens)
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(response)
-}
-
-func criarBens() []model.Bem {
-	bem := model.Bem{
-		Nome:  "Imovel",
-		Valor: 100,
-	}
-	return []model.Bem{bem}
 }

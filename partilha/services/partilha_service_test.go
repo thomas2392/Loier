@@ -67,8 +67,8 @@ func criarConjuge() models.Conjuge {
 	return conjuge
 }
 
-func criarFalecido() models.Pessoa {
-	falcecido := models.Pessoa{
+func criarFalecido() models.Falecido {
+	falcecido := models.Falecido{
 		NomeFalecido:  "FalcedidoTeste",
 		DataObito:     "01/01/2020",
 		DataCasamento: "01/01/2000",

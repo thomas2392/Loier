@@ -6,7 +6,7 @@ type Familiar interface {
 	NomeFamiliar() string
 }
 
-type Pessoa struct {
+type Falecido struct {
 	NomeFalecido  string     `json:"nomeFalecido"`
 	DataObito     string     `json:"dataObito"`
 	DataCasamento string     `json:"dataCasamento"`
@@ -40,7 +40,7 @@ func (f Filho) NomeFamiliar() string {
 	return f.Nome
 }
 
-func (p *Pessoa) UnmarshalJSON(data []byte) error {
+func (f *Falecido) UnmarshalJSON(data []byte) error {
 	var raw rawPessoa
 	if err := json.Unmarshal(data, &raw); err != nil {
 		return err
@@ -51,7 +51,7 @@ func (p *Pessoa) UnmarshalJSON(data []byte) error {
 		if err := json.Unmarshal(raw.Conjuge, &conjuge); err != nil {
 			return err
 		}
-		p.Conjuge = conjuge
+		f.Conjuge = conjuge
 	}
 
 	for _, filhoData := range raw.Filhos {
@@ -59,12 +59,12 @@ func (p *Pessoa) UnmarshalJSON(data []byte) error {
 		if err := json.Unmarshal(filhoData, &filho); err != nil {
 			return err
 		}
-		p.Filhos = append(p.Filhos, filho)
+		f.Filhos = append(f.Filhos, filho)
 	}
 
-	p.NomeFalecido = raw.NomeFalecido
-	p.DataObito = raw.DataObito
-	p.DataCasamento = raw.DataCasamento
+	f.NomeFalecido = raw.NomeFalecido
+	f.DataObito = raw.DataObito
+	f.DataCasamento = raw.DataCasamento
 
 	return nil
 }
