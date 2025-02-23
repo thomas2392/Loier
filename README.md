@@ -1,4 +1,4 @@
 # Loier
 
-* Start Project
+* To start the project run<br>
     $ docker compose up
