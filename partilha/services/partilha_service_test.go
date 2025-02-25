@@ -12,7 +12,7 @@ func TestCriarMeeiroSemHerdeiros(t *testing.T) {
 	var herdeiros []models.Herdeiro
 	conjuge := criarConjuge()
 
-	percentual, herdeiros = criarMeeiro(conjuge.NomeFamiliar(), percentual, herdeiros)
+	percentual, herdeiros = criarMeeiro(conjuge.RelativeName(), percentual, herdeiros)
 
 	if percentual != percentualEsperado {
 		t.Fatalf("Percentual esperado era metade %v, recebeu %v", percentualEsperado, percentual)
@@ -29,7 +29,7 @@ func TestCriarMeeiroSemHerdeiros(t *testing.T) {
 
 func TestCalcularPercentuaisHerancaSemConjuge(t *testing.T) {
 	falecido := criarFalecido()
-	falecido.Filhos = criarFilhos(2)
+	falecido.Sons = appendSons(2)
 	herdeiros := calcularPercentuaisHeranca(falecido)
 	totalPercentual := 0.0
 	for _, h := range herdeiros {
@@ -78,16 +78,21 @@ func criarFalecido() models.Falecido {
 	return falcecido
 }
 
-func criarFilhos(quantidade int) []models.Familiar {
-	var filhos []models.Familiar
-	for range quantidade {
-		q := strconv.Itoa(quantidade)
-		filho := models.Filho{
-			Nome: "Filho" + q,
+func appendSons(n int) []models.Relative {
+	var r []models.Relative
+	for i := range n {
+		index := i + 1
+		newSlice := make([]models.Relative, i+1)
+		oldSize := i - 1
+		for oldSize >= 0 {
+			newSlice[oldSize] = r[oldSize]
+			oldSize--
 		}
-		quantidade--
-		filhos = append(filhos, filho)
+		son := models.Son{
+			Name: "Son" + strconv.Itoa(index),
+		}
+		newSlice[i] = son
+		r = newSlice
 	}
-
-	return filhos
+	return r
 }

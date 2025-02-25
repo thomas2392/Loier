@@ -2,16 +2,16 @@ package models
 
 import "encoding/json"
 
-type Familiar interface {
-	NomeFamiliar() string
+type Relative interface {
+	RelativeName() string
 }
 
 type Falecido struct {
 	NomeFalecido  string     `json:"nomeFalecido"`
 	DataObito     string     `json:"dataObito"`
 	DataCasamento string     `json:"dataCasamento"`
-	Conjuge       Familiar   `json:"conjuge"`
-	Filhos        []Familiar `json:"filhos"`
+	Conjuge       Relative   `json:"conjuge"`
+	Sons          []Relative `json:"sons"`
 }
 
 type rawPessoa struct {
@@ -19,7 +19,7 @@ type rawPessoa struct {
 	DataObito     string            `json:"dataObito"`
 	DataCasamento string            `json:"dataCasamento"`
 	Conjuge       json.RawMessage   `json:"conjuge"`
-	Filhos        []json.RawMessage `json:"filhos"`
+	Sons          []json.RawMessage `json:"sons"`
 }
 
 type Conjuge struct {
@@ -27,17 +27,17 @@ type Conjuge struct {
 	Meeiro bool   `json:"meeiro"`
 }
 
-type Filho struct {
-	Nome     string `json:"nome"`
-	Herdeiro bool   `json:"herdeiro"`
+type Son struct {
+	Name string `json:"name"`
+	Heir bool   `json:"heir"`
 }
 
-func (c Conjuge) NomeFamiliar() string {
+func (c Conjuge) RelativeName() string {
 	return c.Nome
 }
 
-func (f Filho) NomeFamiliar() string {
-	return f.Nome
+func (s Son) RelativeName() string {
+	return s.Name
 }
 
 func (f *Falecido) UnmarshalJSON(data []byte) error {
@@ -54,12 +54,12 @@ func (f *Falecido) UnmarshalJSON(data []byte) error {
 		f.Conjuge = conjuge
 	}
 
-	for _, filhoData := range raw.Filhos {
-		var filho Filho
-		if err := json.Unmarshal(filhoData, &filho); err != nil {
+	for _, sonData := range raw.Sons {
+		var son Son
+		if err := json.Unmarshal(sonData, &son); err != nil {
 			return err
 		}
-		f.Filhos = append(f.Filhos, filho)
+		f.Sons = append(f.Sons, son)
 	}
 
 	f.NomeFalecido = raw.NomeFalecido
