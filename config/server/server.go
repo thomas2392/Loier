@@ -1,15 +1,15 @@
 package server
 
 import (
-	"fmt"
 	"log"
 	"net/http"
 )
 
 func StartServer() {
 	Router()
-	fmt.Println("Server is listening on http://localhost:8080")
+	log.Println("Server is listening on http://localhost:8080")
 	if err := http.ListenAndServe(":8080", nil); err != nil {
+		log.Println("Error when starting server on http://localhost:8080.")
 		log.Fatal(err)
 	}
 }

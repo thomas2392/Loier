@@ -2,7 +2,7 @@ package redis_client
 
 import (
 	"context"
-	"fmt"
+	"log"
 
 	"github.com/go-redis/redis/v8"
 )
@@ -17,12 +17,12 @@ func CreateRedisClient() {
 		DB:       0,
 	})
 
-	pong, err := rdb.Ping(ctx).Result()
+	_, err := rdb.Ping(ctx).Result()
 	if err != nil {
-		fmt.Println("Error when establishing redis connection:", err)
-		return
+		log.Println("Error when establishing redis connection.")
+		log.Fatal(err)
 	}
-	fmt.Println("Conection with redis sucessfull:", pong)
+	log.Println("Conection with redis sucessfull.")
 }
 
 func GetRedisClient() *redis.Client {
