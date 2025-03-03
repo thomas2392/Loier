@@ -1,15 +1,21 @@
 package server
 
 import (
+	"fmt"
 	"log"
 	"net/http"
+	"os"
 )
+
+var port = os.Getenv("PORT")
+var host = os.Getenv("HOST")
 
 func StartServer() {
 	Router()
-	log.Println("Server is listening on http://localhost:8080")
-	if err := http.ListenAndServe(":8080", nil); err != nil {
-		log.Println("Error when starting server on http://localhost:8080.")
+	port_address := fmt.Sprintf(":%s", port)
+	log.Printf("Server is listening on http://%s%s", host, port_address)
+	if err := http.ListenAndServe(port_address, nil); err != nil {
+		log.Printf("Error when starting server on http://%s%s.", host, port_address)
 		log.Fatal(err)
 	}
 }

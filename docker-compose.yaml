@@ -7,8 +7,10 @@ services:
       dockerfile: Dockerfile.dev
     restart: always
     ports:
-      - "8080:8080"
+      - "${PORT}:${PORT}"
     depends_on:
       - redis-server
     volumes:
       - .:/user/app/loier
+    env_file:
+      - .env
