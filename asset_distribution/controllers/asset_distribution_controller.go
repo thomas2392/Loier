@@ -7,11 +7,11 @@ import (
 	"log"
 	"net/http"
 
-	model "loier/partilha/models"
-	service "loier/partilha/services"
+	model "loier/asset_distribution/models"
+	service "loier/asset_distribution/services"
 )
 
-func PartilhaController(w http.ResponseWriter, r *http.Request) {
+func AssetDistributionController(w http.ResponseWriter, r *http.Request) {
 	request, err := io.ReadAll(r.Body)
 	if err != nil {
 		log.Println(err)

@@ -1,7 +1,7 @@
 package services
 
 import (
-	"loier/partilha/models"
+	"loier/asset_distribution/models"
 )
 
 func CriarPartilha(falecido models.Falecido, listaDeBens []models.Bem) []models.Partilha {
