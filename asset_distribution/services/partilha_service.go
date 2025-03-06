@@ -4,13 +4,15 @@ import (
 	"loier/asset_distribution/models"
 )
 
-func CriarPartilha(falecido models.Falecido, listaDeBens []models.Bem) []models.Partilha {
-	var partilhas []models.Partilha
-	for _, bem := range listaDeBens {
-		herdeiros := calcularPercentuaisHeranca(falecido)
-		partilha := models.Partilha{
-			Bem:       bem,
-			Herdeiros: herdeiros,
+func CreateAssetDistribution(request models.AssetDistributionRequest) []models.AssetDistribution {
+	var partilhas []models.AssetDistribution
+	deceased := request.Deceased
+	assets := request.Asssets
+	for _, asset := range assets {
+		herdeiros := calcularPercentuaisHeranca(deceased)
+		partilha := models.AssetDistribution{
+			Asset: asset,
+			Heir:  herdeiros,
 		}
 		partilhas = append(partilhas, partilha)
 	}

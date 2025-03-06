@@ -16,13 +16,13 @@ func AssetDistributionController(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		log.Println(err)
 	}
-	var result model.PartilhaRequest
+	var result model.AssetDistributionRequest
 	err = json.Unmarshal(request, &result)
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
-	response := service.CriarPartilha(result.Falecido, result.Bens)
+	response := service.CreateAssetDistribution(result)
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(response)
 }
