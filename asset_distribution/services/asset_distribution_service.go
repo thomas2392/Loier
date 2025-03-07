@@ -5,21 +5,21 @@ import (
 )
 
 func CreateAssetDistribution(request models.AssetDistributionRequest) []models.AssetDistribution {
-	var partilhas []models.AssetDistribution
+	var assets_distribution []models.AssetDistribution
 	deceased := request.Deceased
 	assets := request.Asssets
 	for _, asset := range assets {
-		herdeiros := calcularPercentuaisHeranca(deceased)
-		partilha := models.AssetDistribution{
+		heirs := calculateInheritancePercentages(deceased)
+		asset_distribution := models.AssetDistribution{
 			Asset: asset,
-			Heir:  herdeiros,
+			Heirs: heirs,
 		}
-		partilhas = append(partilhas, partilha)
+		assets_distribution = append(assets_distribution, asset_distribution)
 	}
-	return partilhas
+	return assets_distribution
 }
 
-func calcularPercentuaisHeranca(falecido models.Falecido) []models.Herdeiro {
+func calculateInheritancePercentages(falecido models.Falecido) []models.Herdeiro {
 	var herdeiros []models.Herdeiro
 	percentual := 100.0
 

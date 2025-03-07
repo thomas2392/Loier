@@ -2,7 +2,7 @@ package models
 
 type AssetDistribution struct {
 	Asset Bem
-	Heir  []Herdeiro
+	Heirs []Herdeiro
 }
 
 type AssetDistributionRequest struct {
