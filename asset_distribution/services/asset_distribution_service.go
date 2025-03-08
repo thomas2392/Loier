@@ -19,42 +19,42 @@ func CreateAssetDistribution(request models.AssetDistributionRequest) []models.A
 	return assets_distribution
 }
 
-func calculateInheritancePercentages(falecido models.Falecido) []models.Herdeiro {
-	var herdeiros []models.Herdeiro
-	percentual := 100.0
+func calculateInheritancePercentages(deceased models.Falecido) []models.Heir {
+	var heirs []models.Heir
+	percentage := 100.0
 
-	if falecido.Conjuge != nil {
-		conjuge, _ := falecido.Conjuge.(models.Conjuge)
-		if conjuge.Meeiro {
-			percentual, herdeiros = criarMeeiro(conjuge.RelativeName(), percentual, herdeiros)
+	if deceased.Conjuge != nil {
+		spouse, _ := deceased.Conjuge.(models.Conjuge)
+		if spouse.Meeiro {
+			percentage, heirs = criarMeeiro(spouse.RelativeName(), percentage, heirs)
 		}
 	}
-	if len(falecido.Sons) < 1 {
-		herdeiros[0].Percentual = 100.0
+	if len(deceased.Sons) < 1 {
+		heirs[0].Percentage = 100.0
 	} else {
-		for _, son := range falecido.Sons {
-			f, _ := son.(models.Son)
-			herdeiro := criarHerdeiro(f.RelativeName(), len(falecido.Sons), percentual)
-			herdeiros = append(herdeiros, herdeiro)
+		for _, son := range deceased.Sons {
+			s, _ := son.(models.Son)
+			herdeiro := criarHerdeiro(s.RelativeName(), len(deceased.Sons), percentage)
+			heirs = append(heirs, herdeiro)
 		}
 	}
-	return herdeiros
+	return heirs
 }
 
-func criarMeeiro(nome string, percentual float64, herdeiros []models.Herdeiro) (float64, []models.Herdeiro) {
+func criarMeeiro(nome string, percentual float64, herdeiros []models.Heir) (float64, []models.Heir) {
 	percentual = percentual / 2
-	herdeiro := models.Herdeiro{
-		Nome:       nome,
-		Percentual: percentual,
+	herdeiro := models.Heir{
+		Name:       nome,
+		Percentage: percentual,
 	}
 	herdeiros = append(herdeiros, herdeiro)
 	return percentual, herdeiros
 }
 
-func criarHerdeiro(nome string, quantidadeHerdeiros int, percentual float64) models.Herdeiro {
-	herdeiro := models.Herdeiro{
-		Nome:       nome,
-		Percentual: percentual / float64(quantidadeHerdeiros),
+func criarHerdeiro(nome string, quantidadeHerdeiros int, percentual float64) models.Heir {
+	herdeiro := models.Heir{
+		Name:       nome,
+		Percentage: percentual / float64(quantidadeHerdeiros),
 	}
 	return herdeiro
 }

@@ -30,7 +30,7 @@ func TestCriarMeeiroSemHerdeiros(t *testing.T) {
 func TestCalcularPercentuaisHerancaSemConjuge(t *testing.T) {
 	falecido := criarFalecido()
 	falecido.Sons = appendSons(2)
-	herdeiros := calcularPercentuaisHeranca(falecido)
+	herdeiros := calculateInheritancePercentages(falecido)
 	totalPercentual := 0.0
 	for _, h := range herdeiros {
 		totalPercentual += h.Percentual
@@ -43,7 +43,7 @@ func TestCalcularPercentuaisHerancaSemConjuge(t *testing.T) {
 
 func TestCalcularPercentualApenasConjuge(t *testing.T) {
 	falecido := criarFalecido()
-	herdeiros := calcularPercentuaisHeranca(falecido)
+	herdeiros := calculateInheritancePercentages(falecido)
 
 	percentualTotal := 0.0
 	for _, h := range herdeiros {
